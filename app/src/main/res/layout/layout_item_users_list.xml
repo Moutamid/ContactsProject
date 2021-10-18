@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/parentLayoutUserList"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imageviewUserList"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_baseline_add_a_photo_24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/imageviewUserList"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/firstNameUserList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="First name"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lastNameUserList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last name" />
+
+        <TextView
+            android:id="@+id/emailUserList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last name" />
+
+        <TextView
+            android:id="@+id/numberUserList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last name" />
+
+    </LinearLayout>
+
+</RelativeLayout>
