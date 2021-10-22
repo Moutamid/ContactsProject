@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -27,6 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,6 +44,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.util.Util;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import org.json.JSONObject;
 
@@ -389,13 +392,19 @@ public class RegisterStudentActivity extends AppCompatActivity {
     Uri imageUri;
 
     public void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ImagePicker.with(RegisterStudentActivity.this)
+                .cameraOnly()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start();
+
+        /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photo = new File(getFilesDir(), "Pic.jpg");
 //        File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 Uri.fromFile(photo));
         imageUri = Uri.fromFile(photo);
-        startActivityForResult(intent, 8888);
+        startActivityForResult(intent, 8888);*/
     }
 
     private void chooseFromStorage() {
@@ -485,6 +494,29 @@ public class RegisterStudentActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e("Camera", e.toString());
             }
+        }
+
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            Uri uri = data.getData();
+
+            b.imageviewSignup.setImageURI(data.getData());
+
+            ContentResolver contentResolver = getContentResolver();
+            try {
+                if (Build.VERSION.SDK_INT < 28) {
+                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri);
+                } else {
+                    ImageDecoder.Source source = ImageDecoder.createSource(contentResolver, uri);
+                    bitmap = ImageDecoder.decodeBitmap(source);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
 
     }
